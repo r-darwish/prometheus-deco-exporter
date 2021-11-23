@@ -12,11 +12,6 @@ import (
 )
 
 var (
-	deviceOnline = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "deco_device_online",
-		Help: "Online devices",
-	}, []string{"device"})
-
 	uploadSpeed = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "deco_download_speed",
 		Help: "Online devices",
@@ -43,7 +38,6 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	prometheus.MustRegister(deviceOnline)
 	prometheus.MustRegister(uploadSpeed)
 	prometheus.MustRegister(downloadSpeed)
 	prometheus.MustRegister(errors)
@@ -61,7 +55,6 @@ func main() {
 
 func updateDevices(c *deco.Client) {
 	currentNames := make(map[string]struct{})
-	deviceOnline.DeleteLabelValues()
 	devices, err := c.ClientList()
 	if err != nil {
 		log.Println(err)
@@ -75,12 +68,7 @@ func updateDevices(c *deco.Client) {
 	}
 	for _, client := range devices.Result.ClientList {
 		currentNames[client.Name] = exists
-		clientOnline := 0
-		if client.Online {
-			clientOnline = 1
-		}
 
-		deviceOnline.WithLabelValues(client.Name).Set(float64(clientOnline))
 		uploadSpeed.WithLabelValues(client.Name).Set(float64(client.UpSpeed))
 		downloadSpeed.WithLabelValues(client.Name).Set(float64(client.DownSpeed))
 	}
@@ -89,7 +77,6 @@ func updateDevices(c *deco.Client) {
 		for client := range *names {
 			_, present := currentNames[client]
 			if !present {
-				deviceOnline.DeleteLabelValues(client)
 				uploadSpeed.DeleteLabelValues(client)
 				downloadSpeed.DeleteLabelValues(client)
 			}

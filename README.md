@@ -10,7 +10,6 @@ Connect Prometheus to port 9919 of the machine running this daemon
 
 ## Metrics
 
-* `deco_device_online` - Connected clients
 * `deco_download_speed` - Client download speed
 * `deco_upload_speed` - Client upload speed
 * `deco_errors` - Errors encountered by the daemon
