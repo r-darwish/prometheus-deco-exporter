@@ -22,17 +22,17 @@ func main() {
 		deviceOnline = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Name: "deco_device_online",
 			Help: "Online devices",
-		}, []string{"device", "interface", "wire_type"})
+		}, []string{"device"})
 
 		uploadSpeed = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Name: "deco_download_speed",
 			Help: "Online devices",
-		}, []string{"device", "interface", "wire_type"})
+		}, []string{"device"})
 
 		downloadSpeed = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Name: "deco_upload_speed",
 			Help: "Online devices",
-		}, []string{"device", "interface", "wire_type"})
+		}, []string{"device"})
 
 		errors = prometheus.NewCounter(prometheus.CounterOpts{
 			Name: "deco_errors",
@@ -62,9 +62,9 @@ func main() {
 						clientOnline = 1
 					}
 
-					deviceOnline.WithLabelValues(client.Name, client.Interface, client.WireType).Set(float64(clientOnline))
-					uploadSpeed.WithLabelValues(client.Name, client.Interface, client.WireType).Set(float64(client.UpSpeed))
-					downloadSpeed.WithLabelValues(client.Name, client.Interface, client.WireType).Set(float64(client.DownSpeed))
+					deviceOnline.WithLabelValues(client.Name).Set(float64(clientOnline))
+					uploadSpeed.WithLabelValues(client.Name).Set(float64(client.UpSpeed))
+					downloadSpeed.WithLabelValues(client.Name).Set(float64(client.DownSpeed))
 				}
 			}
 
