@@ -13,12 +13,12 @@ import (
 
 var (
 	uploadSpeed = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "deco_download_speed",
+		Name: "deco_upload_speed",
 		Help: "Online devices",
 	}, []string{"device"})
 
 	downloadSpeed = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "deco_upload_speed",
+		Name: "deco_download_speed",
 		Help: "Online devices",
 	}, []string{"device"})
 
